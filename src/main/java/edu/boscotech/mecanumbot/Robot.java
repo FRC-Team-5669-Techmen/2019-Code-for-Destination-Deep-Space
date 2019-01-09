@@ -7,17 +7,13 @@
 
 package edu.boscotech.mecanumbot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.boscotech.mecanumbot.commands.ExampleCommand;
 import edu.boscotech.mecanumbot.commands.ManualMecanumDrive;
 import edu.boscotech.mecanumbot.subsystems.ExampleSubsystem;
 import edu.boscotech.mecanumbot.subsystems.MecanumDriveSubsystem;
@@ -33,6 +29,10 @@ public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
+
+  private void setupTeleopCommands() {
+    addTeleopCommand(new ManualMecanumDrive());
+  }
 
   //////////////////////////////////////////////////////////////////////////////
   // EVERYTHING BELOW THIS IS MORE LOW-LEVEL STUFF THAT DOESN'T NEED TO BE
@@ -71,6 +71,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    for (Command command : m_teleopCommands) {
+      command.cancel();
+    }
+    m_teleopCommands.clear();
   }
 
   @Override
@@ -107,12 +111,18 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
+  private void addTeleopCommand(Command command) {
+    command.start();
+    m_teleopCommands.add(command);
+  }
+
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    setupTeleopCommands();
   }
 
   /**
