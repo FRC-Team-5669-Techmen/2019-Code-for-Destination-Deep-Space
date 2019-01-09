@@ -13,7 +13,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.boscotech.mecanumbot.commands.ExampleCommand;
+import edu.boscotech.mecanumbot.commands.ManualMecanumDrive;
 import edu.boscotech.mecanumbot.subsystems.ExampleSubsystem;
 import edu.boscotech.mecanumbot.subsystems.MecanumDriveSubsystem;
 
@@ -28,13 +33,15 @@ public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
+
+  //////////////////////////////////////////////////////////////////////////////
+  // EVERYTHING BELOW THIS IS MORE LOW-LEVEL STUFF THAT DOESN'T NEED TO BE
+  // MODIFIED MUCH. IF YOU WANT TO CHANGE HOW THE ROBOT RUNS, CHANGE IT IN OTHER
+  // CODE OR OTHER FILES.
+  //////////////////////////////////////////////////////////////////////////////
+
   public static OI m_oi;
-
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  Joystick m_mainStick = new Joystick(0);
-  Joystick m_sideStick = new Joystick(1);
+  List<Command> m_teleopCommands = new ArrayList<Command>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -43,9 +50,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.addDefault("Default Auto", new ExampleCommand());
-    // chooser.addObject("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
   }
 
   /**
@@ -87,19 +91,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
-
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
      * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
      */
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
   }
 
   /**
@@ -116,9 +113,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
   }
 
   /**
@@ -126,13 +120,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    System.out.println(m_mainStick.getX());
     Scheduler.getInstance().run();
-    m_mecanumDrive.driveCartesian(
-      m_mainStick.getX() * 0.5, 
-      m_mainStick.getY() * 0.5,
-      m_mainStick.getZ() * 0.3
-    );
   }
 
   /**
