@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.boscotech.mecanumbot.commands.ManualMecanumDrive;
+import edu.boscotech.mecanumbot.components.LidarLite3;
 import edu.boscotech.mecanumbot.subsystems.ExampleSubsystem;
+import edu.boscotech.mecanumbot.subsystems.LidarSubsystem;
 import edu.boscotech.mecanumbot.subsystems.MecanumDriveSubsystem;
 
 /**
@@ -29,6 +31,7 @@ public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
+  public static LidarSubsystem m_lidar = new LidarSubsystem();
 
   private void setupTeleopCommands() {
     addTeleopCommand(new ManualMecanumDrive());
