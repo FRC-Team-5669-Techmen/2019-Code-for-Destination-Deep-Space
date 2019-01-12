@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package edu.boscotech.mecanumbot.subsystems;
+package edu.boscotech.frc.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 

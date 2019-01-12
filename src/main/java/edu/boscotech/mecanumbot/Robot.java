@@ -15,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.boscotech.mecanumbot.commands.ManualMecanumDrive;
-import edu.boscotech.mecanumbot.components.LidarLite3;
-import edu.boscotech.mecanumbot.subsystems.ExampleSubsystem;
-import edu.boscotech.mecanumbot.subsystems.LidarSubsystem;
-import edu.boscotech.mecanumbot.subsystems.MecanumDriveSubsystem;
+import edu.boscotech.frc.subsystems.ExampleSubsystem;
+import edu.boscotech.frc.subsystems.LidarSubsystem;
+import edu.boscotech.frc.subsystems.MecanumDriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
