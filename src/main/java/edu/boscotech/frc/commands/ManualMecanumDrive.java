@@ -3,7 +3,6 @@ package edu.boscotech.frc.commands;
 import edu.boscotech.frc.config.AnalogControl;
 import edu.boscotech.frc.config.Controls;
 import edu.boscotech.frc.subsystems.MecanumDriveSubsystem;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ManualMecanumDrive extends Command {

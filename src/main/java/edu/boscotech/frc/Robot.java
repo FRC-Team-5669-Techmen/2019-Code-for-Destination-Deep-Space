@@ -7,7 +7,6 @@
 
 package edu.boscotech.frc;
 
-import edu.boscotech.frc.config.Config;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
