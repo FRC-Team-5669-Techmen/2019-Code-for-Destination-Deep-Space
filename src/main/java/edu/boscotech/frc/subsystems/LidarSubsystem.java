@@ -1,6 +1,6 @@
-package edu.boscotech.mecanumbot.subsystems;
+package edu.boscotech.frc.subsystems;
 
-import edu.boscotech.mecanumbot.components.LidarLite3;
+import edu.boscotech.frc.components.LidarLite3;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class LidarSubsystem extends Subsystem {

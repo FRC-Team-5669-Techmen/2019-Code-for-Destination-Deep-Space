@@ -1,4 +1,4 @@
-package edu.boscotech.mecanumbot.components;
+package edu.boscotech.frc.components;
 
 import edu.wpi.first.wpilibj.I2C;
 

@@ -1,4 +1,4 @@
-package edu.boscotech.mecanumbot.subsystems;
+package edu.boscotech.frc.subsystems;
 
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;

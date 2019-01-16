@@ -1,0 +1,36 @@
+{
+  "controls": {
+    "mecanum": {
+      "x": {
+        "joystick": 0,
+        "axis": 0,
+        "curve": 2.0,
+        "scale": 1.0
+      },
+      "y": {
+        "joystick": 0,
+        "axis": 1,
+        "curve": 2.0,
+        "scale": 1.0
+      },
+      "r": {
+        "joystick": 0,
+        "axis": 2,
+        "curve": 2.0,
+        "scale": 0.5
+      },
+      "xyThrottle": {
+        "joystick": 1,
+        "axis": 0,
+        "curve": 1.0,
+        "scale": 1.0
+      },
+      "rThrottle": {
+        "joystick": 1,
+        "axis": 1,
+        "curve": 1.0,
+        "scale": 1.0
+      }
+    }
+  }
+}
