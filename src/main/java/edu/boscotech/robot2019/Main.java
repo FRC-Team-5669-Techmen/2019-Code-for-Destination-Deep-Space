@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package edu.boscotech.mecanumbot;
+package edu.boscotech.robot2019;
 
 import edu.wpi.first.wpilibj.RobotBase;
 
