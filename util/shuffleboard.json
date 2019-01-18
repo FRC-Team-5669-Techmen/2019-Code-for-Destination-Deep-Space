@@ -1,0 +1,57 @@
+{
+  "dividerPosition": 0.0026068821689259644,
+  "tabPane": [
+    {
+      "title": "Camera",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "1,0": {
+            "size": [
+              13,
+              11
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "showControls": false,
+              "showCrosshair": false,
+              "crosshairColor": "#FFFFFFFF",
+              "compression": 100.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "15,1": {
+            "size": [
+              8,
+              3
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_title": ""
+            }
+          },
+          "15,6": {
+            "size": [
+              8,
+              4
+            ],
+            "content": {
+              "_type": "Mecanum Drivebase",
+              "_title": "",
+              "showForceVectors": true
+            }
+          }
+        }
+      }
+    }
+  ]
+}
