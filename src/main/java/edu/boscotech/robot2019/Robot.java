@@ -5,9 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package edu.boscotech.mecanumbot;
+package edu.boscotech.robot2019;
 
 import edu.boscotech.frc.commands.ManualMecanumDrive;
+import edu.boscotech.frc.components.Lifecam;
 import edu.boscotech.frc.subsystems.LidarSubsystem;
 import edu.boscotech.frc.subsystems.MecanumDriveSubsystem;
 
@@ -22,9 +23,12 @@ public class Robot extends edu.boscotech.frc.Robot {
   public static MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
   public static LidarSubsystem m_lidar = new LidarSubsystem();
+  
+  private Lifecam camera = new Lifecam("front");
 
   public Robot() {
     super();
+    camera.startCameraStream();
   }
 
   @Override
