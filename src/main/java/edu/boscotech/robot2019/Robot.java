@@ -27,6 +27,6 @@ public class Robot extends edu.boscotech.frc.Robot {
   public Robot() {
     super();
     m_camera.startCameraStreams();
-    useDefaultCommandsFrom(m_mecanumDrive, m_lidar);
+    useDefaultCommandsFrom(m_mecanumDrive, m_lidar, m_camera);
   }
 }
