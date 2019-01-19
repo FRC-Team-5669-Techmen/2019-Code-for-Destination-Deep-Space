@@ -7,6 +7,7 @@
 
 package edu.boscotech.frc;
 
+import edu.boscotech.frc.util.DefaultCommandCreator;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,9 +16,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Robot extends TimedRobot {
-  protected abstract void setupTeleopCommands();
+  List<Command> m_currentCommands = new ArrayList<>();
+  List<DefaultCommandCreator> m_defaultSubsystems = new ArrayList<>();
 
-  List<Command> m_teleopCommands = new ArrayList<Command>();
+  /**
+   * Starts one or more commands that will automatically be stopped once the 
+   * robot stops being in its current mode. For example, if several commands are
+   * added during teleop to control the robot from the joysticks, they will be
+   * automatically interrupted once the teleop period ends.
+   * @param commands The commands to be added.
+   */
+  protected void useCommands(Command... commands) {
+    for (Command command : commands) {
+      if (command == null) continue;
+      command.start();
+      m_currentCommands.add(command);
+    }
+  }
+
+  /**
+   * Add a subsystem that, whenever teleop or test mode is started, its default
+   * command for that mode will be automatically started as well.
+   * @param subsystem
+   */
+  protected void useDefaultCommandsFrom(DefaultCommandCreator... subsystems) {
+    for (DefaultCommandCreator subsystem : subsystems) {
+      m_defaultSubsystems.add(subsystem);
+    }
+  }
 
   /**
    * This function is run when the robot is first started up and should be
@@ -46,10 +72,10 @@ public abstract class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    for (Command command : m_teleopCommands) {
+    for (Command command : m_currentCommands) {
       command.cancel();
     }
-    m_teleopCommands.clear();
+    m_currentCommands.clear();
   }
 
   @Override
@@ -86,18 +112,11 @@ public abstract class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  protected void addTeleopCommand(Command command) {
-    command.start();
-    m_teleopCommands.add(command);
-  }
-
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    setupTeleopCommands();
+    for (DefaultCommandCreator creator : m_defaultSubsystems) {
+      useCommands(creator.createDefaultTeleopCommand());
+    }
   }
 
   /**
@@ -108,10 +127,18 @@ public abstract class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
+  @Override
+  public void testInit() {
+    for (DefaultCommandCreator creator : m_defaultSubsystems) {
+      useCommands(creator.createDefaultTestCommand());
+    }
+  }
+
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
+    Scheduler.getInstance().run();
   }
 }
