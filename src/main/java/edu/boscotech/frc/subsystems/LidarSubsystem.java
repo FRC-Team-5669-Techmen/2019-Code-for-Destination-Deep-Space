@@ -1,9 +1,11 @@
 package edu.boscotech.frc.subsystems;
 
 import edu.boscotech.frc.components.LidarLite3;
+import edu.boscotech.frc.util.DefaultCommandCreator;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class LidarSubsystem extends Subsystem {
+public class LidarSubsystem extends Subsystem implements DefaultCommandCreator {
   private LidarLite3 sensor = new LidarLite3();
 
   public LidarSubsystem() {
@@ -23,5 +25,15 @@ public class LidarSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  @Override
+  public Command createDefaultTeleopCommand() {
+    return null;
+  }
+
+  @Override
+  public Command createDefaultTestCommand() {
+    return null;
   }
 }

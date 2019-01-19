@@ -1,7 +1,11 @@
 package edu.boscotech.frc.subsystems;
 
+import edu.boscotech.frc.commands.ManualMecanumDrive;
+import edu.boscotech.frc.commands.TestMecanumDrive;
+import edu.boscotech.frc.util.DefaultCommandCreator;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
@@ -10,7 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
  * An adapter class for {@link MecanumDrive} that also sets up its motor
  * controllers.
  */
-public class MecanumDriveSubsystem extends Subsystem {
+public class MecanumDriveSubsystem extends Subsystem 
+  implements DefaultCommandCreator {
   private SendableBuilderImpl networkData = new SendableBuilderImpl();
   private boolean networkTablesControlOn = false;
   MecanumDrive drive = new MecanumDrive(
@@ -99,4 +104,14 @@ public class MecanumDriveSubsystem extends Subsystem {
 
   @Override
   public void initDefaultCommand() { }
+
+  @Override
+  public Command createDefaultTeleopCommand() {
+    return new ManualMecanumDrive(this);
+  }
+
+  @Override
+  public Command createDefaultTestCommand() {
+    return new TestMecanumDrive(this);
+  }
 }
