@@ -1,6 +1,7 @@
 package edu.boscotech.frc.components;
 
 import edu.boscotech.frc.config.Config;
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -18,10 +19,22 @@ public class Lifecam {
       port = cfg.getInt("cameras", name, "port"),
       width = cfg.getInt("cameras", name, "width"),
       height = cfg.getInt("cameras", name, "height"),
-      fps = cfg.getInt("cameras", name, "fps");
+      fps = cfg.getInt("cameras", name, "fps"),
+      quality = cfg.getInt("cameras", name, "quality");
 
-    camera = CameraServer.getInstance().startAutomaticCapture(port);
+    CameraServer cameraServer = CameraServer.getInstance();
+    MjpegServer mjpegServer 
+      = cameraServer.addServer("server for " + name + " camera");
+    camera = new UsbCamera(name + " camera", port);
+    cameraServer.addCamera(camera);
+    mjpegServer.setSource(camera);
+    
+    mjpegServer.getProperty("compression").set(quality);
+    mjpegServer.getProperty("default_compression").set(quality);
+    mjpegServer.getProperty("width").set(width);
+    mjpegServer.getProperty("height").set(height);
     camera.setResolution(width, height);
+    mjpegServer.getProperty("fps").set(fps);
     camera.setFPS(fps);
   }
 }
