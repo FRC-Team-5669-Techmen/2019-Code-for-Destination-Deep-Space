@@ -32,6 +32,10 @@ public class AnalogControl {
   }
 
   public double getValue() {
-    return m_scale * Math.pow(m_joystick.getRawAxis(m_axisIndex), m_curve);
+    double value = m_joystick.getRawAxis(m_axisIndex);
+    // Abs and multiply by sign so that we get the correct sign, even if the
+    // power is e.g. 2, which would make everything positive.
+    value = Math.abs(Math.pow(value, m_curve)) * (value > 0.0 ? 1 : -1);
+    return m_scale * value;
   }
 }
