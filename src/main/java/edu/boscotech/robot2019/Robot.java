@@ -19,10 +19,10 @@ import edu.boscotech.frc.subsystems.MecanumDriveSubsystem;
  * project.
  */
 public class Robot extends edu.boscotech.frc.Robot {
-  public static MecanumDriveSubsystem m_mecanumDrive
+  private MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
-  public static LidarSubsystem m_lidar = new LidarSubsystem();
-  public static CameraSubsystem m_camera = new CameraSubsystem("front");
+  private LidarSubsystem m_lidar = new LidarSubsystem();
+  private CameraSubsystem m_camera = new CameraSubsystem("front");
 
   public Robot() {
     super();
