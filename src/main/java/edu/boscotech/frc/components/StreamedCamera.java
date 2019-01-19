@@ -5,11 +5,11 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
-public class Lifecam {
+public class StreamedCamera {
   UsbCamera camera;
   String name;
 
-  public Lifecam(String name) {
+  public StreamedCamera(String name) {
     this.name = name;
   }
 
