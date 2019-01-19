@@ -7,7 +7,7 @@
 
 package edu.boscotech.robot2019;
 
-import edu.boscotech.frc.components.Lifecam;
+import edu.boscotech.frc.subsystems.CameraSubsystem;
 import edu.boscotech.frc.subsystems.LidarSubsystem;
 import edu.boscotech.frc.subsystems.MecanumDriveSubsystem;
 
@@ -22,12 +22,11 @@ public class Robot extends edu.boscotech.frc.Robot {
   public static MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
   public static LidarSubsystem m_lidar = new LidarSubsystem();
-  
-  private Lifecam m_camera = new Lifecam("front");
+  public static CameraSubsystem m_camera = new CameraSubsystem("front");
 
   public Robot() {
     super();
-    m_camera.startCameraStream();
+    m_camera.startCameraStreams();
     useDefaultCommandsFrom(m_mecanumDrive, m_lidar);
   }
 }
