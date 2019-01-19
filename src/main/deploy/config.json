@@ -37,8 +37,8 @@
   "cameras": {
     "front": {
       "port": 0,
-      "width": 220,
-      "height": 140,
+      "width": 240,
+      "height": 160,
       "fps": 20
     }
   }
