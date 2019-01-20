@@ -7,9 +7,9 @@
 
 package edu.boscotech.robot2019;
 
-import edu.boscotech.frc.subsystems.CameraSubsystem;
-import edu.boscotech.frc.subsystems.LidarSubsystem;
-import edu.boscotech.frc.subsystems.MecanumDriveSubsystem;
+import edu.boscotech.techlib.subsystems.CameraSubsystem;
+import edu.boscotech.techlib.subsystems.LidarSubsystem;
+import edu.boscotech.techlib.subsystems.MecanumDriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,7 +18,7 @@ import edu.boscotech.frc.subsystems.MecanumDriveSubsystem;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends edu.boscotech.frc.Robot {
+public class Robot extends edu.boscotech.techlib.Robot {
   private MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
   private LidarSubsystem m_lidar = new LidarSubsystem();

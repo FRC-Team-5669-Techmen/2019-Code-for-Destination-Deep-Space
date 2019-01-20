@@ -1,0 +1,3 @@
+[submodule "src/main/java/edu/boscotech/techlib"]
+	path = src/main/java/edu/boscotech/techlib
+	url = https://gitlab.com/frc-5669/techlib
