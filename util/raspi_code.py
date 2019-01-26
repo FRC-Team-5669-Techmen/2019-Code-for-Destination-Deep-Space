@@ -54,6 +54,8 @@ class GripPipeline:
 
         self.convex_hulls_output = None
 
+        self.total_convex_hull = None
+
 
     def process(self, source0):
         """
@@ -85,9 +87,10 @@ class GripPipeline:
         (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
 
         # Step Convex_Hulls0:
-        self.__convex_hulls_contours = self.find_contours_output
-        (self.convex_hulls_output) = self.__convex_hulls(self.__convex_hulls_contours)
+        # self.__convex_hulls_contours = self.find_contours_output
+        # (self.convex_hulls_output) = self.__convex_hulls(self.__convex_hulls_contours)
 
+        (self.total_convex_hull) = self.__total_convex_hull(self.find_contours_output)
 
     @staticmethod
     def __hsv_threshold(input, hue, sat, val):
@@ -178,6 +181,16 @@ class GripPipeline:
         for contour in input_contours:
             output.append(cv2.convexHull(contour))
         return output
+
+    @staticmethod
+    def __total_convex_hull(input_contours):
+        """Computes the convex hulls of all contours as a whole.
+        Args:
+            input_contours: A list of numpy.ndarray that each represent a contour.
+        Returns:
+            A numpy.ndarray that represent the convex hull (contour).
+        """
+        return cv2.convexHull(sum(input_contours))
 
 
 BlurType = Enum('BlurType', 'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter')
