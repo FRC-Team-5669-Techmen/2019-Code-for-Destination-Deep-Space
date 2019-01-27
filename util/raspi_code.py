@@ -194,7 +194,7 @@ class GripPipeline:
 
         self.__blur_input = self.cv_max_output
         self.__blur_type = BlurType.Box_Blur
-        self.__blur_radius = 16.216216216216196
+        self.__blur_radius = 4.0
 
         self.blur_output = None
 
