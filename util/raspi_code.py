@@ -1,5 +1,165 @@
 #!/usr/bin/env python3
 
+from math import sqrt
+import numpy
+import cv2
+from types import SimpleNamespace
+
+def circle_finder(contour):
+    """Finds the center and diameter of a circle in an image, given that the
+    contour provided describes a vaguely circular shape. This algorithm will
+    find a correct center regardless of inbalanced density of points. For
+    example, if the contour has a bunch more points in the top-left corner than
+    in the bottom right, it will not shift the percieved center towards the
+    top-left. This makes it better for center-finding than a simple averaging
+    of all the contour's points.
+    """
+    # How it works:
+    # 1. Draw a bounding box around all contour points.
+    # 2. Divide the bounding box into four quadrants.
+    # 3. Seperate all points based on which quadrant they are in.
+    # 4. Find one point in each quadrant that is the farthest from the center
+    #    of the bounding box (by pythagorean distance)
+    # 5. For each of those points, find the point in the opposite quadrant
+    #    that is the farthest from it.
+    # 6. Draw lines between each starting point and its corresponding farthest
+    #    point.
+    # 7. Find the line with the highest length. That is the diameter.
+    # 8. Find the centerpoint of that line. That is the center.
+
+    # 1. Draw bounding box
+    bx1, bx2, by1, by2 = 1000, 0, 1000, 0
+    for point in contour:
+        x, y = point[0]
+        if (x < bx1):
+            bx1 = x
+        if (x > bx2):
+            bx2 = x
+        if (y < by1):
+            by1 = y
+        if (y > by2):
+            by2 = y
+    
+    # 2: Divide box into four quadrants.
+    class Quadrant:
+        def __init__(self):
+            self.points = []
+        
+        def add_point(self, x, y):
+            self.points.append((x, y))
+        
+        def get_farthest_point(self, x = 0, y = 0):
+            if (len(self.points) == 0):
+                return None
+            farthest_distance = 0
+            farthest_index = 0
+            for i, point in enumerate(self.points):
+                distance = sqrt((point[0] - x) ** 2 + (point[1] - y) ** 2)
+                if (distance > farthest_distance):
+                    farthest_distance = distance
+                    farthest_index = i
+            return self.points[farthest_index]
+    quadrants = [Quadrant() for i in range(4)]
+    bxc, byc = (bx1 + bx2) / 2, (by1 + by2) / 2
+                
+    # 3: Divide all points into qudrants.
+    for point in contour:
+        x, y = point[0]
+        if (x > bxc):
+            if (y > byc):
+                quadrants[0].add_point(x, y)
+            else:
+                quadrants[3].add_point(x, y)
+        else:
+            if (y > byc):
+                quadrants[1].add_point(x, y)
+            else:
+                quadrants[2].add_point(x, y)
+    
+    # 4: Find farthest point from center in each quadrant.
+    for quadrant in quadrants:
+        quadrant.farthest_point = quadrant.get_farthest_point(bxc, byc)
+    
+    # 5: Find point in opposite quadrant with farthest distance.
+    for i in range(len(quadrants)):
+        quadrant = quadrants[i]
+        opposite = quadrants[(i + len(quadrants) // 2) % len(quadrants)]
+        if (quadrant.farthest_point is None):
+            continue
+        x, y = quadrant.farthest_point
+        quadrant.opposite_point = opposite.get_farthest_point(x, y)
+    
+    # 7: Find lines.
+    class Line:
+        def __init__(self, point1, point2):
+            self.x1, self.y1 = point1
+            self.x2, self.y2 = point2
+            self.xc, self.yc = (self.x1 + self.x2) // 2, (self.y1 + self.y2) // 2
+            self.d = sqrt((self.x1 - self.x2) ** 2 + (self.y1 - self.y2) ** 2)
+    lines = []
+    for quadrant in quadrants:
+        try:
+            lines.append(Line(quadrant.farthest_point, quadrant.opposite_point))
+        except:
+            pass # There was no farthest / opposite point computed for the quadrant.
+
+    # 8: Find longest, and diameter.
+    longest = max(lines, key = lambda e: e.d)
+    diameter = longest.d
+
+    # 9. Find center point.
+    centerx = longest.xc
+    centery = longest.yc
+
+    class CircleReport:
+        pass
+    
+    r = CircleReport()
+    r.centerx = centerx
+    r.centery = centery
+    r.diameter = diameter
+    r.quadrants = quadrants
+    r.bounding_box = SimpleNamespace(
+        x1 = bx1, x2 = bx2, y1 = by1, y2 = by2
+    )
+    r.line = longest
+    
+    return r
+
+def draw_circle_report(img, circle_report):
+    if (circle_report is None):
+        return img
+
+    bb = circle_report.bounding_box
+    cv2.rectangle(img, (bb.x1, bb.y1), (bb.x2, bb.y2), (127, 127, 127), 1)
+    cx, cy = (bb.x1 + bb.x2) // 2, (bb.y1 + bb.y2) // 2
+    cv2.line(img, (cx, bb.y1), (cx, bb.y2), (127, 127, 127), 1)
+    cv2.line(img, (bb.x1, cy), (bb.x2, cy), (127, 127, 127), 1)
+
+    for quadrant in circle_report.quadrants:
+        for x, y in quadrant.points:
+            cv2.drawMarker(img, (x, y), (127, 127, 127), cv2.MARKER_SQUARE, 4)
+
+    for quadrant in circle_report.quadrants:
+        try:
+            cv2.drawMarker(img, quadrant.farthest_point, (0, 0, 255), cv2.MARKER_TRIANGLE_UP, 6)
+            cv2.drawMarker(img, quadrant.opposite_point, (255, 0, 0), cv2.MARKER_TRIANGLE_DOWN, 6)
+        except:
+            pass # No special points computed for quadrant.
+    
+    l = circle_report.line
+    cv2.line(img, (l.x1, l.y1), (l.x2, l.y2), (0, 255, 0), 1)
+    c = (circle_report.centerx, circle_report.centery)
+    cv2.drawMarker(img, c, (0, 255, 0), cv2.MARKER_DIAMOND, 10)
+    cv2.drawMarker(img, c, (0, 255, 0), cv2.MARKER_TILTED_CROSS, 10)
+    cv2.circle(img, c, int(circle_report.diameter / 2), (0, 255, 0), 1)
+
+    return img
+
+"""
+TODO: Find center of mass of blob contour. I'll need to do some math logicing.
+"""
+
 import cv2
 import numpy
 import math
@@ -55,6 +215,7 @@ class GripPipeline:
         self.convex_hulls_output = None
 
         self.total_convex_hull = None
+        self.circle_report = None
 
 
     def process(self, source0):
@@ -90,7 +251,14 @@ class GripPipeline:
         # self.__convex_hulls_contours = self.find_contours_output
         # (self.convex_hulls_output) = self.__convex_hulls(self.__convex_hulls_contours)
 
-        (self.total_convex_hull) = self.__total_convex_hull(self.find_contours_output)
+        if (len(self.find_contours_output)):
+            total_contour = numpy.concatenate(self.find_contours_output)
+            #(self.total_convex_hull) = self.__total_convex_hull(total_contour)
+            self.total_convex_hull = total_contour
+            self.circle_report = circle_finder(self.total_convex_hull)
+        else:
+            print('No contours detected.')
+            self.circle_report = None
 
     @staticmethod
     def __hsv_threshold(input, hue, sat, val):
@@ -349,14 +517,19 @@ def startCamera(config):
     thresh2 = inst.putVideo("Img Proc: Threshold #2", 320, 240)
     blur = inst.putVideo("Img Proc: Blur", 320, 240)
     thresh3 = inst.putVideo("Img Proc: Threshold #3", 320, 240)
+    circle_report = inst.putVideo("Img Proc: Circle Finder", 320, 240)
 
     while True:
         time, img = camInput.grabFrame(img)
+        if (time == 0):
+            print('There was an error retrieving the frame.')
+            continue
         pipeline.process(img)
         thresh1.putFrame(pipeline.hsv_threshold_0_output)
         thresh2.putFrame(pipeline.hsv_threshold_1_output)
         blur.putFrame(pipeline.blur_output)
         thresh3.putFrame(pipeline.cv_threshold_output)
+        circle_report.putFrame(draw_circle_report(img, pipeline.circle_report))
 
     return camera
 
