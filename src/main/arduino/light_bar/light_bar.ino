@@ -25,6 +25,10 @@ const byte I2C_SERIAL_NUMBER = 0x02;
 
 const byte I2C_DATA_SIZE = 4, NUM_SENSORS = 16;
 const uint SAMPLES_PER_SENSOR = 8;
+const uint OUTPUT_PRECISION = 8; // A value of 8 means 8 times as many output positions as there are sensors.
+const int ANALOG_PIN = A0;
+// Multiplexer pins must be attached as follows (for efficiency reasons):
+// A = 10, B = 11, C = 12, D = 13
 const uint CALIBRATION[NUM_SENSORS] = {
   0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0
@@ -34,25 +38,49 @@ byte *output = &i2cRegisters[1], *registerPointer = &i2cRegisters[0];
 
 void setup() {
   Wire.begin(I2C_SLAVE_ADDRESS);
-
   Wire.onRequest(handleI2CRequest);
   Wire.onReceive(handleI2CReceive);
+
+  // Sets the ADC to go 16x as fast without a decrease in accuracy.
+  ADCSRA |= 0b00000100;
+  ADCSRA &= 0b11111100;
+  DDRB |= 0b00111100; // Set ports 10-13 as output ports.
 }
 
 void loop() {
-  byte brightestIndex = 0;
-  uint brightestValue = 0;
+  uint values[NUM_SENSORS];
+  uint minValue = 65535; // Brightest value.
+  uint maxValue = 0; // Darkest value.
   for (byte sensorIndex = 0; sensorIndex < NUM_SENSORS; sensorIndex++) {
-    uint value = 0;
+    uint value = 0; // Because of how it is wired, lower voltages means brighter light
+    // Write four-bit representation of sensor index to multiplexer.
+    PORTB &= 0b11000011; // Clear ports 10-13.
+    PORTB |= sensorIndex << 2; // Set ports 10-13 to the binary representation of the index.
+    // Poll the analog pin multiple times to get several sensor readings.
     for (uint sample = 0; sample < SAMPLES_PER_SENSOR; sample++) {
-      value += analogRead(0);
+      value += analogRead(ANALOG_PIN);
     }
-    if (value > brightestValue) {
-      brightestValue = value;
-      brightestIndex = sensorIndex;
+    values[sensorIndex] = value;
+    minValue = (value < minValue) ? value : minValue;
+    maxValue = (value > maxValue) ? value : maxValue;
+  }
+
+  uint range, newMax;
+  range = maxValue - minValue;
+  newMax = minValue + range / 2; // Threshold to cut off mostly dark sensors.
+  range = newMax - minValue;
+  uint totalIndices = 0, totalWeight = 0;
+  // Weighted average of all sensors based on their brightness relative to min and max values.
+  // Sensors that are darker than newMax are not counted.
+  for (uint sensorIndex = 0; sensorIndex < NUM_SENSORS; sensorIndex++) {
+    if (values[sensorIndex] <= newMax) {
+      uint weight = (newMax - values[sensorIndex]) / (range / OUTPUT_PRECISION);
+      totalWeight += weight;
+      totalIndices += sensorIndex * weight;
     }
   }
-  *output = brightestIndex;
+  
+  *output = totalIndices / (totalWeight / OUTPUT_PRECISION);
 }
 
 void handleI2CRequest() {
