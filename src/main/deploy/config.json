@@ -1,46 +1,40 @@
 {
-  "controls": {
-    "mecanum": {
-      "x": {
-        "joystick": 0,
-        "axis": 0,
-        "curve": 2.0,
-        "scale": 1.0
-      },
-      "y": {
-        "joystick": 0,
-        "axis": 1,
-        "curve": 2.0,
-        "scale": 1.0
-      },
-      "r": {
-        "joystick": 0,
-        "axis": 2,
-        "curve": 2.0,
-        "scale": 0.5
-      },
-      "xyThrottle": {
-        "joystick": 1,
-        "axis": 0,
-        "curve": 1.0,
-        "scale": 1.0
-      },
-      "rThrottle": {
-        "joystick": 1,
-        "axis": 1,
-        "curve": 1.0,
-        "scale": 1.0
-      }
+  "mecanum": {
+    "frontLeft": 4,
+    "rearLeft": 5,
+    "frontRight": 6,
+    "rearRight": 7,
+    "controls": {
+      "x": { "joystick": 0, "axis": 0, "curve": 2.0, "scale": 1.0 },
+      "y": { "joystick": 0, "axis": 1, "curve": 2.0, "scale": 1.0 },
+      "r": { "joystick": 0, "axis": 2, "curve": 2.0, "scale": 0.5 },
+      "xyThrottle": { "joystick": 1, "axis": 0, "curve": 1.0, "scale": 1.0 },
+      "rThrottle": { "joystick": 1, "axis": 1, "curve": 1.0, "scale": 1.0 }
     }
   },
-
-  "cameras": {
-    "front": {
-      "port": 0,
-      "width": 250,
-      "height": 200,
-      "fps": 31,
-      "quality": 90
-    }
+  "lift": {
+    "motor1": 0,
+    "motor2": 0,
+    "accelTime": 0.0,
+    "useMotor2": false
+  },
+  "wrist": {
+    "motor": 0
+  },
+  "claw": {
+    "leftWheel": 0,
+    "rightWheel": 0,
+    "expand": 0,
+    "contract": 0,
+    "cupServo1": 0,
+    "cupServo2": 0,
+    "deployCups": 0,
+    "retractCups": 0
+  },
+  "raiser": {
+    "extendFront": 0,
+    "retractFront": 0,
+    "extendBack": 0,
+    "retractBack": 0
   }
 }
