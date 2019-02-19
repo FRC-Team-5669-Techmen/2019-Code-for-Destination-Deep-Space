@@ -7,9 +7,13 @@
 
 package edu.boscotech.robot2019;
 
+import edu.boscotech.robot2019.commands.ManualClawControl;
+import edu.boscotech.robot2019.subsystems.ComplexClaw;
 import edu.boscotech.techlib.subsystems.CameraSubsystem;
 import edu.boscotech.techlib.subsystems.LidarSubsystem;
+import edu.boscotech.techlib.subsystems.LiftSubsystem;
 import edu.boscotech.techlib.subsystems.MecanumDriveSubsystem;
+import edu.boscotech.techlib.subsystems.WristSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,12 +25,15 @@ import edu.boscotech.techlib.subsystems.MecanumDriveSubsystem;
 public class Robot extends edu.boscotech.techlib.Robot {
   private MecanumDriveSubsystem m_mecanumDrive
     = new MecanumDriveSubsystem();
-  private LidarSubsystem m_lidar = new LidarSubsystem();
-  private CameraSubsystem m_camera = new CameraSubsystem("front");
+  // private LidarSubsystem m_lidar = new LidarSubsystem();
+  // private CameraSubsystem m_camera = new CameraSubsystem("front");
+  private WristSubsystem m_wrist = new WristSubsystem();
+  private ComplexClaw m_claw = new ComplexClaw();
+  private LiftSubsystem m_lift = new LiftSubsystem();
 
   public Robot() {
     super();
-    m_camera.startCameraStreams();
-    useDefaultCommandsFrom(m_mecanumDrive, m_lidar, m_camera);
+    // m_camera.startCameraStreams();
+    useDefaultCommandsFrom(m_mecanumDrive, m_wrist, m_claw, m_lift);
   }
 }

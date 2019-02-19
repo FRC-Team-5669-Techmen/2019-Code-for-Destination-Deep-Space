@@ -1,35 +1,61 @@
 {
   "mecanum": {
-    "frontLeft": 4,
-    "rearLeft": 5,
-    "frontRight": 6,
-    "rearRight": 7,
+    "frontLeft": 8,
+    "rearLeft": 4,
+    "frontRight": 7,
+    "rearRight": 9,
     "controls": {
-      "x": { "joystick": 0, "axis": 0, "curve": 2.0, "scale": 1.0 },
-      "y": { "joystick": 0, "axis": 1, "curve": 2.0, "scale": 1.0 },
-      "r": { "joystick": 0, "axis": 2, "curve": 2.0, "scale": 0.5 },
-      "xyThrottle": { "joystick": 1, "axis": 0, "curve": 1.0, "scale": 1.0 },
-      "rThrottle": { "joystick": 1, "axis": 1, "curve": 1.0, "scale": 1.0 }
+      "x": { "joystick": 0, "axis": 0, "curve": 2.0, "scale": 1.0, "offset": 0.0 },
+      "y": { "joystick": 0, "axis": 1, "curve": 2.0, "scale": -1.0, "offset": 0.0 },
+      "r": { "joystick": 0, "axis": 4, "curve": 2.0, "scale": 0.5, "offset": 0.0 },
+      "xyThrottle": { "joystick": 1, "axis": 1, "curve": 1.0, "scale": -0.5, "offset": 0.5 },
+      "rThrottle": { "joystick": 1, "axis": 0, "curve": 1.0, "scale": -0.5, "offset": 0.5 }
     }
   },
   "lift": {
-    "motor1": 0,
+    "motor1": 5,
     "motor2": 0,
     "accelTime": 0.0,
-    "useMotor2": false
+    "useMotor2": false,
+    "controls": {
+      "up": { "joystick": 0, "button": 11 },
+      "down": { "joystick": 0, "button": 13 }
+    }
   },
   "wrist": {
-    "motor": 0
+    "motor": 3,
+    "motionProfile": {
+      "cruiseSpeed": 80000,
+      "acceleration": 200000,
+      "f": 0.009302,
+      "p": 0.002,
+      "i": 0.0,
+      "d": 0.0,
+      "distance": 2000000
+    },
+    "controls": {
+      "manual": { "joystick": 0, "axis": 1, "curve": 1.0, "scale": 1.0, "offset": 0.0 },
+      "deploy": { "joystick": 0, "button": 9 },
+      "retract": { "joystick": 0, "button": 7 },
+      "calibrate": { "joystick": 1, "button": 16 }
+    }
   },
   "claw": {
-    "leftWheel": 0,
-    "rightWheel": 0,
-    "expand": 0,
-    "contract": 0,
+    "leftWheel": 2,
+    "rightWheel": 1,
+    "expand": 2,
+    "contract": 3,
     "cupServo1": 0,
-    "cupServo2": 0,
+    "cupServo2": 1,
     "deployCups": 0,
-    "retractCups": 0
+    "retractCups": 1,
+    "controls": {
+      "toggle": { "joystick": 0, "button": 1 },
+      "spit": { "joystick": 0, "button": 6 },
+      "suck": { "joystick": 0, "button": 5 },
+      "toggleCups": { "joystick": 0, "button": 2 },
+      "releaseCups": { "joystick": 0, "button": 3 }
+    }
   },
   "raiser": {
     "extendFront": 0,
