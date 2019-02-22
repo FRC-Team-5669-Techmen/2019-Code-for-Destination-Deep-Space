@@ -72,4 +72,9 @@ public class ManualClawControl extends Command {
   protected boolean isFinished() {
     return false;
   }
+
+  @Override
+  protected void end() {
+    m_wrist.goNeutral();
+  }
 }
