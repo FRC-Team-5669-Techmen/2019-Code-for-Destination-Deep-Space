@@ -1,15 +1,15 @@
 package edu.boscotech.robot2019.commands;
 
-import edu.boscotech.robot2019.subsystems.ComplexClaw;
+import edu.boscotech.robot2019.subsystems.SuctionCupSubsystem;
 import edu.boscotech.techlib.commands.SingleActionCommand;
 
-public class DeployCups extends SingleActionCommand<ComplexClaw> {
-  public DeployCups(ComplexClaw claw) {
-    super(claw);
+public class DeployCups extends SingleActionCommand<SuctionCupSubsystem> {
+  public DeployCups(SuctionCupSubsystem cups) {
+    super(cups);
   }
 
   @Override
   protected void doAction() {
-    getTarget().deployCups();
+    getTarget().deploy();
   }
 }
