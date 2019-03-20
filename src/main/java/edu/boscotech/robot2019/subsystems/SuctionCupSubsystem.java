@@ -50,7 +50,7 @@ public class SuctionCupSubsystem extends BetterSubsystem {
     }
 
     public void openValves() {
-        m_leftValve.set(0.3);
+        m_leftValve.set(0.32);
         m_rightValve.set(0.7);
     }
 
