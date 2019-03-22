@@ -1,8 +1,6 @@
 package edu.boscotech.robot2019.commands;
 
 import edu.boscotech.robot2019.subsystems.SuctionCupSubsystem;
-import edu.boscotech.robot2019.util.Mode;
-import edu.boscotech.robot2019.util.ModeTracker;
 import edu.boscotech.techlib.subsystems.ClawWheelsSubsystem;
 import edu.wpi.first.wpilibj.command.Command;
 

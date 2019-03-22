@@ -5,7 +5,8 @@
         "level0": 0.5,
         "level1": 11.5,
         "level2": 37.0,
-        "level3": 63.0
+        "level3": 63.0,
+        "levelC": 28.0
       },
       "hatch": {
         "level0": 0.5,
@@ -17,22 +18,28 @@
     "wristAngles": {
       "low": 0.97,
       "high": 0.0,
-      "cargo": 0.7202
+      "rocket": 0.7,
+      "cargo": 0.55
     }
   },
 
   "controls": {
-    "hatchMode": { "joystick": 0, "button": 7 },
-    "cargoMode": { "joystick": 0, "button": 9 },
     "spit": { "joystick": 0, "button": 6 },
     "suck": { "joystick": 0, "button": 5 },
     "toggleClaw": { "joystick": 0, "button": 1 },
-    "lift0": { "joystick": 1, "button": 13 },
-    "lift1": { "joystick": 1, "button": 12 },
-    "lift2": { "joystick": 1, "button": 15 },
-    "lift3": { "joystick": 1, "button": 14 },
+    "autoAlign": { "joystick": 0, "button": 300 },
+    "toggleRaiser": { "joystick": 0, "button": 2 },
+    "modeH0": { "joystick": 2, "button": 5 },
+    "modeH1": { "joystick": 2, "button": 6 },
+    "modeH2": { "joystick": 2, "button": 7 },
+    "modeH3": { "joystick": 2, "button": 8 },
+    "modeC0": { "joystick": 2, "button": 1 },
+    "modeC1": { "joystick": 2, "button": 2 },
+    "modeC2": { "joystick": 2, "button": 3 },
+    "modeC3": { "joystick": 2, "button": 4 },
+    "modeCC": { "joystick": 2, "button": 9 },
 
-    "resetEverything": { "joystick": 1, "button": 7 }
+    "resetEverything": { "joystick": 1, "button": 3 }
   },
 
   "cameras": {
@@ -46,21 +53,36 @@
   },
 
   "mecanum": {
-    "frontLeft": 8,
-    "rearLeft": 4,
-    "frontRight": 7,
-    "rearRight": 9,
+    "frontLeft": 24,
+    "rearLeft": 23,
+    "frontRight": 22,
+    "rearRight": 21,
+
+    "lowXYSpeed": 0.3,
+    "highXYSpeed": 1.0,
+    "lowRSpeed": 0.4,
+    "highRSpeed": 0.8,
+
+    "nudgePower": 0.5,
+    "nudgeTime": 0.2,
+    "nudgeEndPower": 0.2,
+    "nudgeEndTime": 0.05,
+
     "controls": {
       "x": { "joystick": 0, "axis": 0, "curve": 2.0, "scale": 1.0, "offset": 0.0 },
       "y": { "joystick": 0, "axis": 1, "curve": 2.0, "scale": -1.0, "offset": 0.0 },
       "r": { "joystick": 0, "axis": 4, "curve": 2.0, "scale": 0.5, "offset": 0.0 },
-      "xyThrottle": { "joystick": 1, "axis": 1, "curve": 1.0, "scale": -0.5, "offset": 0.5 },
-      "rThrottle": { "joystick": 1, "axis": 0, "curve": 1.0, "scale": -0.5, "offset": 0.5 },
+      "xySpeedToggle": { "joystick": 2, "button": 11 },
+      "rSpeedToggle": { "joystick": 2, "button": 12 },
       "nudgeLeft": { "joystick": 0, "button": 14 },
       "nudgeRight": { "joystick": 0, "button": 12 },
       "nudgeForward": { "joystick": 0, "button": 11 },
       "nudgeBack": { "joystick": 0, "button": 13 }
     }
+  },
+  "liftWheel": {
+    "id": 100,
+    "control": { "joystick": 0, "axis": 1, "curve": 2.0, "scale": -0.1, "offset": 0.0 }
   },
   "lift": {
     "motor1": 5,
@@ -76,10 +98,10 @@
       "level3": { "joystick": 1, "button": -1 }
     },
     "motionProfile": {
-      "cruiseSpeed": 130000,
+      "cruiseSpeed": 100000,
       "acceleration": 200000,
-      "f": 0.0182300644,
-      "p": 0.001999855,
+      "f": 0.0162300644,
+      "p": 0.001699855,
       "i": 0.0,
       "d": 0.0,
       "range": 4776000,
@@ -123,13 +145,13 @@
   "suctionCups": {
     "deploy": 1,
     "retract": 0,
-    "leftServo": 0,
-    "rightServo": 1
+    "leftServo": 1,
+    "rightServo": 0
   },
   "raiser": {
-    "extendFront": 0,
-    "retractFront": 0,
-    "extendBack": 0,
-    "retractBack": 0
+    "extendFront": 5,
+    "retractFront": 4,
+    "extendBack": 6,
+    "retractBack": 7
   }
 }
